@@ -3,6 +3,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Microsoft.VisualBasic;
 using System;
+using TbdConsoleClientApp.ViewModels;
 
 namespace TbdConsoleClientApp
 {
@@ -353,43 +354,10 @@ namespace TbdConsoleClientApp
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
 
-                Console.ReadLine();
+                
             }
         }
 
-        public static async Task GetUsersNew()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                Console.WriteLine("Calling WebAPI....");
-
-                string apiUrl = "https://localhost:7224/GetUsers";
-
-                try
-                {
-                    var response = await client.GetAsync(apiUrl);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine("Result from API:\n");
-
-
-                        Console.WriteLine(JsonConvert.DeserializeObject($"{result}"));
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception: {ex.Message}");
-                }
-
-                Console.ReadLine();
-            }
-        }
 
         public static async Task GetArtistsNew(int userid)
         {
@@ -423,7 +391,7 @@ namespace TbdConsoleClientApp
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
 
-                Console.ReadLine();
+               
             }
         }
 
@@ -458,19 +426,18 @@ namespace TbdConsoleClientApp
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
 
-                Console.ReadLine();
+               
             }
 
         }
 
-        public static async Task GetGenresNew(int userid)
+        public static async Task GetUsersNew()
         {
             using (HttpClient client = new HttpClient())
             {
                 Console.WriteLine("Calling WebAPI....");
 
-
-                string apiUrl = $"https://localhost:7224/GetGenres/{userid}";
+                string apiUrl = "https://localhost:7224/GetUsers";
 
                 try
                 {
@@ -481,8 +448,59 @@ namespace TbdConsoleClientApp
                         var result = await response.Content.ReadAsStringAsync();
                         Console.WriteLine("Result from API:\n");
 
+                        
+                        var users = JsonConvert.DeserializeObject<List<string>>(result);
 
-                        Console.WriteLine(JsonConvert.DeserializeObject($"{result}"));
+                        
+                        var usersViewModel = new ListOfUsersViewModel
+                        {
+                            Users = users
+                        };
+
+                       
+                        foreach (var userName in usersViewModel.Users)
+                        {
+                            Console.WriteLine($"User Name: {userName}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception: {ex.Message}");
+                }
+            }
+        }
+
+
+        public static async Task GetGenresNew(int userId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                Console.WriteLine("Calling WebAPI....");
+
+                string apiUrl = $"https://localhost:7224/GetGenres/{userId}";
+
+                try
+                {
+                    var response = await client.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine("Result from API:\n");
+
+                      
+                        var genresList = JsonConvert.DeserializeObject<List<ViewModels.GenresViewModel>>(result);
+
+                   
+                        foreach (var genre in genresList)
+                        {
+                            Console.WriteLine($"Genre ID: {genre.genreId}, Title: {genre.title}");
+                        }
                     }
                     else
                     {
@@ -494,9 +512,10 @@ namespace TbdConsoleClientApp
                     Console.WriteLine($"Exception: {ex.Message}");
                 }
 
-                Console.ReadLine();
+              
             }
         }
+
 
         public static void EscapeKeyCall()
         {
