@@ -22,7 +22,6 @@ namespace TbdConsoleClientApp
                 Console.WriteLine($"\t\t Press {"3"} to view Artists Related To A Specific User");
                 Console.WriteLine($"\t\t Press {"4"} to view Genres Related To A Specific User");
                 Console.WriteLine($"\t\t Press {"5"} to view Songs Related To A Specific User");
-
                 Console.WriteLine($"\t\t Press {"6"} to Add an Artist");
                 Console.WriteLine($"\t\t Press {"7"} to Add a Genre");
                 Console.WriteLine($"\t\t Press {"8"} to Add a Song");
@@ -409,19 +408,30 @@ namespace TbdConsoleClientApp
 
 
                 string apiUrl = $"https://localhost:7224/GetSongs/{userid}";
-
+               
                 try
-                {
+                { 
                     var response = await client.GetAsync(apiUrl);
+                   
+                   
 
                     if (response.IsSuccessStatusCode)
                     {
                         var result = await response.Content.ReadAsStringAsync();
                         Console.WriteLine("Result from API:\n");
 
+                        var SongList = JsonConvert.DeserializeObject<List<ViewModels.SongsViewModel>>(result);
 
-                        Console.WriteLine(JsonConvert.DeserializeObject($"{result}"));
+
+                        foreach (var song in SongList)
+                        {
+                            Console.WriteLine($"Song ID: {song.songId}, Artist Name: {song.songTitle}");
+                        }
+
+
+
                     }
+
                     else
                     {
                         Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");

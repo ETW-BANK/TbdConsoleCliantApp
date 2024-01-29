@@ -8,5 +8,9 @@ namespace TbdConsoleClientApp.ViewModels
 {
     internal class SongsViewModel
     {
+       
+            public int songId { get; set; }
+            public string songTitle { get; set; }
+        }
     }
-}
+
