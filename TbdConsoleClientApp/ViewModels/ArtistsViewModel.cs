@@ -8,5 +8,9 @@ namespace TbdConsoleClientApp.ViewModels
 {
     internal class ArtistsViewModel
     {
+        public int artistId { get; set; }
+        public string artistName { get; set; }
+        public string artistDescription { get; set; }
     }
+
 }

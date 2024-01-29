@@ -155,8 +155,6 @@ namespace TbdConsoleClientApp
 
         }
 
-
-        
         public static async Task AddArtist()
         {
             using (HttpClient client = new HttpClient())
@@ -378,8 +376,16 @@ namespace TbdConsoleClientApp
                         var result = await response.Content.ReadAsStringAsync();
                         Console.WriteLine("Result from API:\n");
 
+                        var ArtistsList = JsonConvert.DeserializeObject<List<ViewModels.ArtistsViewModel>>(result);
 
-                        Console.WriteLine(JsonConvert.DeserializeObject($"{result}"));
+
+                        foreach (var artist in ArtistsList)
+                        {
+                            Console.WriteLine($"Artist ID: {artist.artistId}, Artist Name: {artist.artistName}, Artist Description: {artist.artistDescription}");
+                        }
+
+
+                       
                     }
                     else
                     {
