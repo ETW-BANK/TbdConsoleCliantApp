@@ -425,7 +425,7 @@ namespace TbdConsoleClientApp
 
                         foreach (var song in SongList)
                         {
-                            Console.WriteLine($"Song ID: {song.songId}, Artist Name: {song.songTitle}");
+                            Console.WriteLine($"Song ID: {song.songId}, Song Title: {song.songTitle}");
                         }
 
 
